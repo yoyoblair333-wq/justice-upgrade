@@ -61,22 +61,24 @@ To deploy and try it live, follow [`deploy/STUDIO_DEPLOY.md`](deploy/STUDIO_DEPL
 
 ---
 
-## Deployment evidence — TO FILL AFTER DEPLOY
+## Deployment evidence (Studionet, 2026-10-31)
 
-> **TO FILL AFTER DEPLOY.** These values do not exist yet. They come from a live deployment made by following `deploy/STUDIO_DEPLOY.md`. Every placeholder below is still unfilled.
+Live deployment made by following `deploy/STUDIO_DEPLOY.md` with the exact arguments in the guide, from freshly generated throwaway accounts. Every transaction below is **FINALIZED**. The full record, with validator votes and the raw receipts, is in [`docs/LIVE_EVIDENCE.md`](docs/LIVE_EVIDENCE.md) and [`docs/live/studionet-run.json`](docs/live/studionet-run.json).
 
 | Item | Value |
 |---|---|
-| Network | `TO FILL AFTER DEPLOY` (e.g. Studionet / Testnet Bradbury) |
-| Contract address | `TO FILL AFTER DEPLOY` |
-| Deploy transaction | `TO FILL AFTER DEPLOY` |
-| `create_agreement` tx | `TO FILL AFTER DEPLOY` |
-| `accept_agreement` tx | `TO FILL AFTER DEPLOY` |
-| `file_dispute` tx | `TO FILL AFTER DEPLOY` |
-| `respond` tx | `TO FILL AFTER DEPLOY` |
-| `resolve_dispute` tx (ruling + consensus result) | `TO FILL AFTER DEPLOY` |
-| Rejected injection attempt tx (expected revert) | `TO FILL AFTER DEPLOY` |
-| `get_ruling("chores-1")` output | `TO FILL AFTER DEPLOY` |
+| Network | Studionet (`https://studio.genlayer.com/api`) |
+| Contract address | `0x189247716CB87661fDae59aA5fc38eb9df1D9c9c` |
+| Deployed code check | `gen_getContractCode` sha256 `44c405df8ea7696795536f9552efc4de314acaf115832300afae2131e3f939b1` = sha256 of `contracts/justice_upgrade.py` (**match**) |
+| Deploy transaction | `0xee8119fc675deb8162f3f3d92669442454b483829ee7326c9bde20bd86dad855`: FINALIZED, SUCCESS |
+| `create_agreement` tx | `0x89275ba3fb57539f25a8dbf1386b21bdc61091013a231382d7f309b8c8a106a9`: FINALIZED, SUCCESS |
+| `accept_agreement` tx | `0xe52fdbd5fbde8603947744fefbb5638538d1ec32485c75294d72ccccbecac240`: FINALIZED, SUCCESS |
+| `file_dispute` tx | `0x7ff8f5efbdd6dc4100e78b5650a2c686f372c6bc8a4cccd595f3cbdc55b1b78b`: FINALIZED, SUCCESS |
+| `respond` tx | `0x5a8adc5d3c26ac086d7b27dd31c4fe7eea65aa917b99e898cc0c99dfb80b03c8`: FINALIZED, SUCCESS |
+| `resolve_dispute` tx (ruling + consensus result) | `0x582c9a22ffba4726e4e5240d9c1aee4bd6fb53281ad71a455f0f047c3ed281d3`: FINALIZED, SUCCESS. Ruling `SPLIT`, `coerced: false`. Consensus `MAJORITY_AGREE`: 3 agree, 2 disagree of 5 validators |
+| Rejected injection attempt tx (expected revert) | `0x6c416071a9859ed62942914eb2e98a4a1fad5b2d7273a81b1337ffb5388ebf85`: FINALIZED, execution ERROR, revert `[EXPECTED] statement contains instructions aimed at the arbiter` |
+| Other guard reverts | Outsider files a dispute: `0xe375338d89a1b4756ce4822cd330c01f0317c78f66d9e9ee2f6115530c6a0115` (`[EXPECTED] only a party to the agreement may file a dispute`). Early resolve: `0x3f3347db2ae452c6373b684f41b05aa6853754721ca9f9d7be1c04e5c904ece7` (`[EXPECTED] response window is still open; wait for a response or the deadline`). Double resolve: `0x2d6969dd4d5b62ac1aa3568d251c694c22f70d68660ac8cf58a7cd9c1e3a97ca` (`[EXPECTED] cannot resolve: agreement is RESOLVED, expected DISPUTED`). All FINALIZED, execution ERROR |
+| `get_ruling("chores-1")` output | `{"status": "RESOLVED", "ruling": "SPLIT", "coerced": false, "reasoning": "The agreed terms contain no illness exception, so both missed nights (Tuesday and Wednesday) trigger the makeup obligation regardless of cause. Ben acknowledges skipping Wednesday and accepts the consequence, but has not offered to cover the Tuesday miss, which also violated the terms.", "resolution": "Ben should take out Ana's trash on the next two scheduled turns (one for Tuesday's missed dishes, one for Wednesday's), and both parties should discuss whether to add a sickness exception to their agreement going forward."}` |
 | Demo video | `TO FILL AFTER DEPLOY` |
 
 ---
@@ -178,6 +180,8 @@ tests/direct/                   direct-mode tests + conftest.py
 scripts/verify.sh               one-shot reviewer verification
 deploy/STUDIO_DEPLOY.md         GenLayer Studio deployment + full example run
 docs/VERIFY_LOG.md              output of verify.sh from a fresh clone
+docs/LIVE_EVIDENCE.md           live Studionet deployment record
+docs/live/studionet-run.json    raw JSON of that run
 requirements.txt                pinned: genlayer-test 0.29.2, genvm-linter 0.11.0, pytest 9.1.1
 Makefile                        setup / test / lint / verify
 .github/workflows/ci.yml        CI: runs scripts/verify.sh
@@ -186,7 +190,7 @@ Makefile                        setup / test / lint / verify
 ## SDK target and known caveats
 
 - The contract targets the GenVM **v0.2** Python SDK (runner hash `py-genlayer:1jb45aa8…` in the file header, the same one the official `genlayer-project-boilerplate` uses). It was validated with `genvm-linter` 0.11.0 against GenVM v0.2.16. If the network you deploy to has moved to SDK v0.3, the import and storage names change; check before deploying.
-- The response window uses the transaction datetime (`gl.message_raw["datetime"]`). Its format is handled for `…Z` and `±HH:MM` ISO strings. Confirm it on one live transaction.
+- The response window uses the transaction datetime (`gl.message_raw["datetime"]`). Its format is handled for `…Z` and `±HH:MM` ISO strings. Confirmed live on Studionet, which supplies `…Z` timestamps (see `docs/LIVE_EVIDENCE.md`).
 - Rulings come from LLMs and are advisory. Different validator models can disagree on close cases. When that happens the transaction does not reach consensus, which is the intended fail-closed behaviour.
 
 ## Lineage
