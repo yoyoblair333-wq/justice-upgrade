@@ -69,6 +69,7 @@ Live deployment made by following `deploy/STUDIO_DEPLOY.md` with the exact argum
 |---|---|
 | Network | Studionet (`https://studio.genlayer.com/api`) |
 | Contract address | `0x189247716CB87661fDae59aA5fc38eb9df1D9c9c` |
+| Live page | https://yoyoblair333-wq.github.io/justiceupgrade-app/ (enable Pages: Settings → Pages → Source: GitHub Actions) |
 | Deployed code check | `gen_getContractCode` sha256 `44c405df8ea7696795536f9552efc4de314acaf115832300afae2131e3f939b1` = sha256 of `contracts/justice_upgrade.py` (**match**) |
 | Deploy transaction | `0xee8119fc675deb8162f3f3d92669442454b483829ee7326c9bde20bd86dad855`: FINALIZED, SUCCESS |
 | `create_agreement` tx | `0x89275ba3fb57539f25a8dbf1386b21bdc61091013a231382d7f309b8c8a106a9`: FINALIZED, SUCCESS |
@@ -184,7 +185,10 @@ docs/LIVE_EVIDENCE.md           live Studionet deployment record
 docs/live/studionet-run.json    raw JSON of that run
 requirements.txt                pinned: genlayer-test 0.29.2, genvm-linter 0.11.0, pytest 9.1.1
 Makefile                        setup / test / lint / verify
-.github/workflows/ci.yml        CI: runs scripts/verify.sh
+.github/workflows/ci.yml        CI: runs scripts/verify.sh + the offline web tests
+.github/workflows/pages.yml     deploys web/ to GitHub Pages from main
+web/                            live read-only page (npm ci && npm run build && npm test;
+                                npm run test:live reads the real contract)
 ```
 
 ## SDK target and known caveats

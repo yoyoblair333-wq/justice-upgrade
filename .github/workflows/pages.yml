@@ -1,0 +1,61 @@
+name: pages
+
+# Builds web/ (the live read-only JusticeUpgrade page) and deploys it to GitHub
+# Pages at https://yoyoblair333-wq.github.io/justiceupgrade-app/ (every URL in
+# the page is relative, so it works under the /justiceupgrade-app/ base path).
+# The page reads the contract on GenLayer studionet live from the visitor's
+# browser (the studionet RPC allows cross-origin requests). snapshot.json is a
+# dated fallback, shown only when that live read fails.
+#
+# One-time setting: Settings -> Pages -> Source: GitHub Actions.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - name: Build site (includes the committed snapshot as the fallback)
+        run: npm run build
+      - name: Refresh the fallback snapshot from the live contract
+        # A studionet outage must not block a deploy: the committed, dated
+        # snapshot from web/snapshot/ stays in place.
+        continue-on-error: true
+        run: npm run snapshot -- dist/snapshot.json
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

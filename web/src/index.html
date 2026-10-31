@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JusticeUpgrade Live Record</title>
+<meta name="description" content="The JusticeUpgrade contract on GenLayer studionet, read live from your browser: code hash, rules, recorded agreements, rulings, transactions and blocked attacks. Testnet only, no real value.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="netbar" role="note"><b>GenLayer studionet testnet</b> · no real value</div>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="./"><span class="mark" aria-hidden="true">JU</span><span>JusticeUpgrade</span></a>
+    <span class="source" id="source" data-state="loading" role="status">Connecting…</span>
+  </header>
+
+  <section class="hero">
+    <h1>The live contract record</h1>
+    <p>An on-chain AI arbiter for everyday agreements, written as a GenLayer Intelligent Contract. Everything below is read from the deployed contract by your browser when the page loads. The page is read-only: it never signs or sends a transaction.</p>
+    <div class="heroact">
+      <button class="btn" id="refresh" type="button">Read again</button>
+      <span class="when" id="when"></span>
+    </div>
+  </section>
+
+  <section class="panel" id="contract" aria-labelledby="contract-h">
+    <h2 id="contract-h">1 · The deployed code</h2>
+    <p class="lede">The page hashes the code the chain returns (<code>gen_getContractCode</code>) and the contract source on GitHub, then compares the two.</p>
+    <div id="code"><p class="empty">Reading…</p></div>
+  </section>
+
+  <section class="panel" id="rules-s" aria-labelledby="rules-h">
+    <h2 id="rules-h">2 · The rules, from <code>get_rules()</code></h2>
+    <div id="rules"><p class="empty">Reading…</p></div>
+  </section>
+
+  <section id="agreements-s" aria-labelledby="agreements-h">
+    <h2 class="sect" id="agreements-h">3 · Recorded agreements, disputes and rulings</h2>
+    <p class="lede fict" id="fictional"><b>Fictional example.</b> Ana and Ben are made-up names for throwaway testnet accounts. The agreements are invented test cases, not real people or real disputes.</p>
+    <div id="agreements" class="cards" aria-live="polite"><p class="empty">Reading…</p></div>
+  </section>
+
+  <section id="txs-s" aria-labelledby="txs-h">
+    <h2 class="sect" id="txs-h">4 · Recorded transactions, checked live</h2>
+    <p class="lede">Hashes come from the recorded run (<code>docs/live/studionet-run.json</code>); the contract does not store them. Status, execution result and validator votes are fetched for each one with <code>getTransaction</code>.</p>
+    <div id="txs" class="txs"><p class="empty">Reading…</p></div>
+  </section>
+
+  <section id="attacks-s" aria-labelledby="attacks-h">
+    <h2 class="sect" id="attacks-h">5 · Four blocked attacks</h2>
+    <p class="lede">Each was sent to the live contract and rolled back. The revert reason is read from the leader's receipt and compared with the reason the run expected. Nothing was written.</p>
+    <div id="attacks" class="cards"><p class="empty">Reading…</p></div>
+  </section>
+
+  <footer>
+    <span>JusticeUpgrade · GenLayer studionet testnet · no real value · holds no funds</span>
+    <span><a id="repo" href="https://github.com/yoyoblair333-wq/justiceupgrade-app">Source on GitHub</a> · <a id="evlink" href="https://github.com/yoyoblair333-wq/justiceupgrade-app/blob/main/docs/live/studionet-run.json">Recorded run</a></span>
+  </footer>
+</div>
+<script type="module" src="app.js"></script>
+</body>
+</html>

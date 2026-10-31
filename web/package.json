@@ -1,0 +1,24 @@
+{
+  "name": "justiceupgrade-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "JusticeUpgrade live read-only page: reads the deployed contract on GenLayer studionet from the browser.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "snapshot": "node scripts/snapshot.mjs",
+    "browser:install": "playwright install chromium",
+    "test": "node --test --test-concurrency=1 test/offline.test.mjs",
+    "test:live": "node test/live.test.cjs"
+  },
+  "dependencies": {
+    "genlayer-js": "1.1.8"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.11",
+    "playwright": "1.63.0"
+  }
+}
