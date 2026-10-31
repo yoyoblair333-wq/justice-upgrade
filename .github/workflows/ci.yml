@@ -1,0 +1,26 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+env:
+  GENVM_VERSION: v0.2.16
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Cache GenVM SDK and linter artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/gltest-direct
+            ~/.cache/genvm-linter
+          key: genvm-v0.2.16
+      - name: Verify (lint + direct-mode tests)
+        run: bash scripts/verify.sh

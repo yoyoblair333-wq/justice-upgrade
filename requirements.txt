@@ -1,0 +1,5 @@
+# Pinned to the exact versions the test suite and linter were run with.
+# Python >= 3.12 is required (the GenVM SDK uses PEP 695 generics).
+genlayer-test==0.29.2
+genvm-linter==0.11.0
+pytest==9.1.1
