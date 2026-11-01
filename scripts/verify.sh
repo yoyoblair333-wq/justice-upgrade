@@ -87,7 +87,7 @@ skip() { NAMES+=("$1"); RESULTS+=("SKIP"); echo; echo "==> $(( ${#NAMES[@]} )). 
 
 step "setup: fresh .venv + pinned requirements" bash -c "rm -rf .venv && '$PY' -m venv .venv && .venv/bin/python -m pip install --quiet --upgrade pip && .venv/bin/python -m pip install --quiet -r requirements.txt && .venv/bin/python -m pip freeze | grep -iE '^(genlayer-test|genvm-linter|pytest|genlayer-py)=='"
 step "genvm-lint check (lint + SDK validation)" .venv/bin/genvm-lint check contracts/justice_upgrade.py
-step "genvm-lint schema (ABI)" bash -c ".venv/bin/genvm-lint schema contracts/justice_upgrade.py > '$LOGDIR/schema.json' && echo \"ABI schema extracted: \$(wc -c < '$LOGDIR/schema.json') bytes\""
+step "genvm-lint schema (ABI)" .venv/bin/genvm-lint schema contracts/justice_upgrade.py
 # First run downloads the GenVM SDK release (~200 MB) into ~/.cache/gltest-direct.
 # The "gltest.config.yaml not found" warning is expected: direct mode uses no network.
 step "contract tests (pytest, direct mode, LLM mocked)" .venv/bin/python -m pytest tests -q -p no:cacheprovider
