@@ -1,7 +1,7 @@
 // LIVE tier (optional; needs network): the built site (web/dist), served under
 // /justiceupgrade-app/ exactly as on GitHub Pages, against the REAL contract on
-// GenLayer studionet and the real GitHub source; nothing is mocked. Read-only:
-// the page never signs or sends a transaction. The offline tier is
+// GenLayer studionet and the real GitHub source; nothing is mocked. Read-only: this tier never clicks Run, so
+// the page never signs or sends a transaction (test/live-write.test.cjs does). The offline tier is
 // test/offline.test.mjs (npm test).
 //
 //   npm run build && npm run test:live      screenshots land in web/test-results/

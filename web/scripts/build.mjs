@@ -33,6 +33,15 @@ await build({
 });
 
 for (const f of ["index.html", "styles.css", "favicon.svg"]) await copyFile(path.join(web, "src", f), path.join(dist, f));
+// The demo video (docs/demo/) is served next to the page at demo/.
+await mkdir(path.join(dist, "demo"), { recursive: true });
+for (const f of ["ju-demo.mp4", "ju-demo.srt"]) {
+  try {
+    await copyFile(path.join(root, "docs/demo", f), path.join(dist, "demo", f));
+  } catch (e) {
+    if (e.code !== "ENOENT") throw e;
+  }
+}
 await writeFile(path.join(dist, ".nojekyll"), "");
 
 const run = JSON.parse(await readFile(path.join(root, "docs/live/studionet-run.json"), "utf8"));

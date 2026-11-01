@@ -4,7 +4,27 @@ One live deployment of `contracts/justice_upgrade.py` to GenLayer Studionet, fol
 
 The full raw record, including the complete `getTransaction` leader receipts, is in [`docs/live/studionet-run.json`](live/studionet-run.json). A trimmed copy is at the end of this page.
 
-## Summary
+## Browser run: one full dispute signed in the web app (2026-11-01)
+
+The web app's **Try it on testnet** flow, run on the built site (`web/dist`) by Playwright through `JU_WEB_WRITE=1 npm run test:live-write`. The browser generated two testnet burners (A `0x44a7B014113253CA4a1A4875F69165C443f975b1`, B `0xcCcB14AA0593e2a8caA5C85E5a1AC8d7E15EA2b3`) and signed all five transactions itself with genlayer-js; nothing was mocked. Each step was followed to FINALIZED, and the ruling was read back from the contract with `get_agreement` / `get_ruling`. Agreement `web-680d13c1656f`, sample "Chore swap", 103 s from page load to the last FINALIZED. Raw record: [`docs/live/browser-run.json`](live/browser-run.json).
+
+| # | Call | Signer | Tx | Final status / execution | Validator votes |
+|---|---|---|---|---|---|
+| 1 | `create_agreement` | A | `0xe0e4ad3c34f03aee4089fab729a51f9fe3c069c1622fe47b5fa93cb45f95a771` | FINALIZED / SUCCESS | agree 3, idle 2 |
+| 2 | `accept_agreement` | B | `0xb479f10592491447aae05745b3d90ee21b0ffb767ede87e2f6071b491461fe08` | FINALIZED / SUCCESS | agree 4, idle 1 |
+| 3 | `file_dispute` | A | `0x18ae7e58c09d8fc55aa7d56a1256e0d94fa31fa2590755c312a831745c566ead` | FINALIZED / SUCCESS | agree 3, idle 2 |
+| 4 | `respond` | B | `0x46087cb63919466523a3c3a3a8e5d2e3f34b2015ef90fd70e06a15d998925cd9` | FINALIZED / SUCCESS | agree 3, idle 2 |
+| 5 | `resolve_dispute` | A | `0x476485fee20698571c7600aca53f30d94a30d831351db3f679870bd1ee5ee13e` | FINALIZED / SUCCESS | agree 3, idle 2 |
+
+Ruling read back: **SPLIT**, `coerced: false`.
+
+> Under the agreed terms, a swap requires texting before 6pm, which B claims to have done on Tuesday — making the Tuesday skip potentially valid if the swap offer was accepted or at least properly communicated; however, B admits to fully failing the Wednesday obligation without any prior text, which is a clear breach of the terms. Party A's grievance is therefore partially valid (Wednesday) but not fully valid if B's Tuesday text is accurate.
+
+Resolution: B should complete two extra dish nights this week to cover the Wednesday breach as already offered; the parties should clarify and confirm whether the Tuesday text swap was received and agreed upon, and going forward both parties should explicitly confirm swap requests to avoid ambiguity.
+
+The demo video ([`docs/demo/ju-demo.mp4`](demo/ju-demo.mp4)) records a second run of the same flow: agreement `web-9ecc7e5783e0`, ruling **SPLIT**, all five transactions FINALIZED with execution SUCCESS (ruling tx `0xf5321733a14775e57e20b4f0c6a81d5fa7b947a34fb6f8eb29b6c6f8e0164739`). Record: [`docs/live/browser-run-demo-video.json`](live/browser-run-demo-video.json).
+
+## Scripted run: summary
 
 | Item | Value |
 |---|---|

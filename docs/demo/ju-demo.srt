@@ -1,0 +1,32 @@
+1
+00:00:00,000 --> 00:00:04,500
+JusticeUpgrade: an AI arbiter for everyday agreements, on GenLayer
+
+2
+00:00:04,500 --> 00:00:07,927
+The page reads the live contract and checks the deployed code against the GitHub source
+
+3
+00:00:07,927 --> 00:00:19,825
+Two testnet accounts, A and B, are made in this browser; fill a sample, tick consent, Run
+
+4
+00:00:19,825 --> 00:00:27,477
+[Sped up 3×] create, accept, dispute, respond: each signed here, then accepted by the validators
+
+5
+00:00:27,477 --> 00:00:35,756
+[Sped up 8×] resolve_dispute: the leader asks its AI model; every validator re-judges and must agree
+
+6
+00:00:35,756 --> 00:00:44,244
+Ruling SPLIT read back from get_ruling; agreement web-9ecc7e5783e0; validators agree 3, idle 2
+
+7
+00:00:44,244 --> 00:00:48,061
+All five transactions FINALIZED, execution SUCCESS
+
+8
+00:00:48,061 --> 00:00:54,061
+Ruling SPLIT; 5 transactions FINALIZED. Try it: yoyoblair333-wq.github.io/justiceupgrade-app
+

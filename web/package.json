@@ -2,7 +2,7 @@
   "name": "justiceupgrade-web",
   "version": "0.1.0",
   "private": true,
-  "description": "JusticeUpgrade live read-only page: reads the deployed contract on GenLayer studionet from the browser.",
+  "description": "JusticeUpgrade web app: run a dispute on GenLayer studionet from the browser with two testnet burners, plus the live record of the deployed contract.",
   "type": "module",
   "engines": {
     "node": ">=20"
@@ -12,7 +12,8 @@
     "snapshot": "node scripts/snapshot.mjs",
     "browser:install": "playwright install chromium",
     "test": "node --test --test-concurrency=1 test/offline.test.mjs",
-    "test:live": "node test/live.test.cjs"
+    "test:live": "node test/live.test.cjs",
+    "test:live-write": "node test/live-write.test.cjs"
   },
   "dependencies": {
     "genlayer-js": "1.1.8"

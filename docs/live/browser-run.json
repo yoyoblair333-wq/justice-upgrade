@@ -1,0 +1,251 @@
+{
+  "about": "Visitor flow on the built site (web/dist served locally), driven by Playwright (headless Chromium) through `JU_WEB_WRITE=1 npm run test:live-write`. Both testnet burners were generated in the browser and every transaction was signed there with genlayer-js; nothing was mocked. Party A and party B are the same browser playing both sides for the demo.",
+  "network": "studionet",
+  "rpc": "https://studio.genlayer.com/api",
+  "elapsedSec": 103,
+  "agreementId": "web-680d13c1656f",
+  "contract": "0x189247716CB87661fDae59aA5fc38eb9df1D9c9c",
+  "partyA": "0x44a7B014113253CA4a1A4875F69165C443f975b1",
+  "partyB": "0xcCcB14AA0593e2a8caA5C85E5a1AC8d7E15EA2b3",
+  "startedAt": "2026-11-01T03:50:22.755Z",
+  "steps": [
+    {
+      "key": "create",
+      "fn": "create_agreement",
+      "signer": "A",
+      "from": "0x44a7B014113253CA4a1A4875F69165C443f975b1",
+      "hash": "0xe0e4ad3c34f03aee4089fab729a51f9fe3c069c1622fe47b5fa93cb45f95a771",
+      "sentAt": "2026-11-01T03:50:23.855Z",
+      "transitions": [
+        {
+          "at": "2026-11-01T03:50:24.029Z",
+          "chainStatus": "PENDING",
+          "execution": "UNKNOWN"
+        },
+        {
+          "at": "2026-11-01T03:50:27.182Z",
+          "chainStatus": "COMMITTING",
+          "execution": "SUCCESS"
+        },
+        {
+          "at": "2026-11-01T03:50:30.299Z",
+          "chainStatus": "ACCEPTED",
+          "execution": "SUCCESS"
+        }
+      ],
+      "decided": {
+        "finality": "ACCEPTED",
+        "chainStatus": "ACCEPTED",
+        "execution": "SUCCESS",
+        "votes": "agree 3, idle 2"
+      },
+      "final": {
+        "finality": "FINALIZED_SUCCESS",
+        "chainStatus": "FINALIZED",
+        "execution": "SUCCESS",
+        "votes": "agree 3, idle 2"
+      }
+    },
+    {
+      "key": "accept",
+      "fn": "accept_agreement",
+      "signer": "B",
+      "from": "0xcCcB14AA0593e2a8caA5C85E5a1AC8d7E15EA2b3",
+      "hash": "0xb479f10592491447aae05745b3d90ee21b0ffb767ede87e2f6071b491461fe08",
+      "sentAt": "2026-11-01T03:50:31.085Z",
+      "transitions": [
+        {
+          "at": "2026-11-01T03:50:31.232Z",
+          "chainStatus": "PENDING",
+          "execution": "UNKNOWN"
+        },
+        {
+          "at": "2026-11-01T03:50:34.362Z",
+          "chainStatus": "COMMITTING",
+          "execution": "SUCCESS"
+        },
+        {
+          "at": "2026-11-01T03:50:37.501Z",
+          "chainStatus": "ACCEPTED",
+          "execution": "SUCCESS"
+        }
+      ],
+      "decided": {
+        "finality": "ACCEPTED",
+        "chainStatus": "ACCEPTED",
+        "execution": "SUCCESS",
+        "votes": "agree 4, idle 1"
+      },
+      "final": {
+        "finality": "FINALIZED_SUCCESS",
+        "chainStatus": "FINALIZED",
+        "execution": "SUCCESS",
+        "votes": "agree 4, idle 1"
+      }
+    },
+    {
+      "key": "dispute",
+      "fn": "file_dispute",
+      "signer": "A",
+      "from": "0x44a7B014113253CA4a1A4875F69165C443f975b1",
+      "hash": "0x18ae7e58c09d8fc55aa7d56a1256e0d94fa31fa2590755c312a831745c566ead",
+      "sentAt": "2026-11-01T03:50:38.243Z",
+      "transitions": [
+        {
+          "at": "2026-11-01T03:50:38.375Z",
+          "chainStatus": "PENDING",
+          "execution": "UNKNOWN"
+        },
+        {
+          "at": "2026-11-01T03:50:41.503Z",
+          "chainStatus": "COMMITTING",
+          "execution": "SUCCESS"
+        },
+        {
+          "at": "2026-11-01T03:50:44.639Z",
+          "chainStatus": "ACCEPTED",
+          "execution": "SUCCESS"
+        }
+      ],
+      "decided": {
+        "finality": "ACCEPTED",
+        "chainStatus": "ACCEPTED",
+        "execution": "SUCCESS",
+        "votes": "agree 3, idle 2"
+      },
+      "final": {
+        "finality": "FINALIZED_SUCCESS",
+        "chainStatus": "FINALIZED",
+        "execution": "SUCCESS",
+        "votes": "agree 3, idle 2"
+      }
+    },
+    {
+      "key": "respond",
+      "fn": "respond",
+      "signer": "B",
+      "from": "0xcCcB14AA0593e2a8caA5C85E5a1AC8d7E15EA2b3",
+      "hash": "0x46087cb63919466523a3c3a3a8e5d2e3f34b2015ef90fd70e06a15d998925cd9",
+      "sentAt": "2026-11-01T03:50:45.323Z",
+      "transitions": [
+        {
+          "at": "2026-11-01T03:50:45.445Z",
+          "chainStatus": "PENDING",
+          "execution": "UNKNOWN"
+        },
+        {
+          "at": "2026-11-01T03:50:48.614Z",
+          "chainStatus": "COMMITTING",
+          "execution": "SUCCESS"
+        },
+        {
+          "at": "2026-11-01T03:50:51.759Z",
+          "chainStatus": "ACCEPTED",
+          "execution": "SUCCESS"
+        }
+      ],
+      "decided": {
+        "finality": "ACCEPTED",
+        "chainStatus": "ACCEPTED",
+        "execution": "SUCCESS",
+        "votes": "agree 3, idle 2"
+      },
+      "final": {
+        "finality": "FINALIZED_SUCCESS",
+        "chainStatus": "FINALIZED",
+        "execution": "SUCCESS",
+        "votes": "agree 3, idle 2"
+      }
+    },
+    {
+      "key": "ruling",
+      "fn": "resolve_dispute",
+      "signer": "A",
+      "from": "0x44a7B014113253CA4a1A4875F69165C443f975b1",
+      "hash": "0x476485fee20698571c7600aca53f30d94a30d831351db3f679870bd1ee5ee13e",
+      "sentAt": "2026-11-01T03:50:52.640Z",
+      "transitions": [
+        {
+          "at": "2026-11-01T03:50:52.772Z",
+          "chainStatus": "PROPOSING",
+          "execution": "UNKNOWN"
+        },
+        {
+          "at": "2026-11-01T03:50:59.048Z",
+          "chainStatus": "PROPOSING",
+          "execution": "SUCCESS"
+        },
+        {
+          "at": "2026-11-01T03:51:02.213Z",
+          "chainStatus": "COMMITTING",
+          "execution": "SUCCESS"
+        },
+        {
+          "at": "2026-11-01T03:51:08.559Z",
+          "chainStatus": "PROPOSING",
+          "execution": "SUCCESS"
+        },
+        {
+          "at": "2026-11-01T03:51:17.967Z",
+          "chainStatus": "COMMITTING",
+          "execution": "SUCCESS"
+        },
+        {
+          "at": "2026-11-01T03:51:27.389Z",
+          "chainStatus": "ACCEPTED",
+          "execution": "SUCCESS"
+        },
+        {
+          "at": "2026-11-01T03:51:55.883Z",
+          "chainStatus": "FINALIZED",
+          "execution": "SUCCESS"
+        }
+      ],
+      "decided": {
+        "finality": "FINALIZED_SUCCESS",
+        "chainStatus": "FINALIZED",
+        "execution": "SUCCESS",
+        "votes": "agree 3, idle 2"
+      },
+      "final": {
+        "finality": "FINALIZED_SUCCESS",
+        "chainStatus": "FINALIZED",
+        "execution": "SUCCESS",
+        "votes": "agree 3, idle 2"
+      }
+    }
+  ],
+  "status": "all-finalized",
+  "readBack": {
+    "agreement": {
+      "accepted_at": "2026-11-01T03:50:30Z",
+      "claim": "B skipped the dishes on Tuesday and Wednesday night and did not text either day, so I did them both nights after my own trash turn.",
+      "coerced": false,
+      "created_at": "2026-11-01T03:50:23Z",
+      "filed_at": "2026-11-01T03:50:38Z",
+      "filed_by": "0x44a7b014113253ca4a1a4875f69165c443f975b1",
+      "id": "web-680d13c1656f",
+      "party_a": "0x44a7b014113253ca4a1a4875f69165c443f975b1",
+      "party_b": "0xcccb14aa0593e2a8caa5c85e5a1ac8d7e15ea2b3",
+      "reasoning": "Under the agreed terms, a swap requires texting before 6pm, which B claims to have done on Tuesday — making the Tuesday skip potentially valid if the swap offer was accepted or at least properly communicated; however, B admits to fully failing the Wednesday obligation without any prior text, which is a clear breach of the terms. Party A's grievance is therefore partially valid (Wednesday) but not fully valid if B's Tuesday text is accurate.",
+      "resolution": "B should complete two extra dish nights this week to cover the Wednesday breach as already offered; the parties should clarify and confirm whether the Tuesday text swap was received and agreed upon, and going forward both parties should explicitly confirm swap requests to avoid ambiguity.",
+      "resolved_at": "2026-11-01T03:50:52Z",
+      "resolved_by": "0x44a7b014113253ca4a1a4875f69165c443f975b1",
+      "responded_at": "2026-11-01T03:50:45Z",
+      "response": "I texted on Tuesday afternoon that I had a late shift and offered to swap for Saturday. I did forget Wednesday, and I will do two extra nights this week to make up for it.",
+      "response_deadline": "2026-11-02T03:50:38Z",
+      "response_window_hours": 24,
+      "ruling": "SPLIT",
+      "status": "RESOLVED",
+      "terms": "Roommates' chore agreement. A takes out the trash on Mondays and Thursdays. B does the dishes every weeknight. If one of us cannot do a turn, we text the other before 6pm and swap it for a later turn."
+    },
+    "ruling": {
+      "coerced": false,
+      "reasoning": "Under the agreed terms, a swap requires texting before 6pm, which B claims to have done on Tuesday — making the Tuesday skip potentially valid if the swap offer was accepted or at least properly communicated; however, B admits to fully failing the Wednesday obligation without any prior text, which is a clear breach of the terms. Party A's grievance is therefore partially valid (Wednesday) but not fully valid if B's Tuesday text is accurate.",
+      "resolution": "B should complete two extra dish nights this week to cover the Wednesday breach as already offered; the parties should clarify and confirm whether the Tuesday text swap was received and agreed upon, and going forward both parties should explicitly confirm swap requests to avoid ambiguity.",
+      "ruling": "SPLIT",
+      "status": "RESOLVED"
+    }
+  },
+  "finishedAt": "2026-11-01T03:51:57.337Z"
+}

@@ -1,6 +1,6 @@
 name: pages
 
-# Builds web/ (the live read-only JusticeUpgrade page) and deploys it to GitHub
+# Builds web/ (the live JusticeUpgrade web app) and deploys it to GitHub
 # Pages at https://yoyoblair333-wq.github.io/justiceupgrade-app/ (every URL in
 # the page is relative, so it works under the /justiceupgrade-app/ base path).
 # The page reads the contract on GenLayer studionet live from the visitor's

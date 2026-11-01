@@ -1,7 +1,9 @@
-// JusticeUpgrade live read-only page. Reads the deployed contract on GenLayer
-// studionet from the browser with genlayer-js. It never signs or sends a
-// transaction. If the RPC cannot be reached it shows snapshot.json, a
-// build-time read of the same views, labelled with the time it was taken.
+// JusticeUpgrade live page. The record half reads the deployed contract on
+// GenLayer studionet from the browser with genlayer-js; it never signs. If the
+// RPC cannot be reached it shows snapshot.json, a build-time read of the same
+// views, labelled with the time it was taken. The "Try it" half (try.js) lets
+// a visitor sign one full dispute with two testnet burners; it is enabled only
+// after a live read shows the deployed code equals the GitHub source.
 //
 // Every string that comes from the chain, GitHub or a JSON file is put on the
 // page with text nodes only (h() below); nothing is parsed as HTML.
@@ -10,6 +12,7 @@ import { createClient } from "genlayer-js";
 import { studionet } from "genlayer-js/chains";
 import * as C from "./config.js";
 import { gather, voteCounts } from "./lib/chain.js";
+import { initTry, setGate } from "./try.js";
 
 const $ = (id) => document.getElementById(id);
 const client = createClient({ chain: studionet, endpoint: C.RPC_URL });
@@ -246,7 +249,11 @@ async function load() {
     const at = new Date().toISOString();
     const d = await gather({ client, address: C.CONTRACT_ADDRESS, evidence, githubUrl: C.GITHUB_SOURCE_URL, fetchSource, parallel: C.MAX_PARALLEL });
     const reached = d.code.ok || d.rules.ok || d.count.ok;
-    if (reached) render(d, { kind: "live", at });
+    if (reached) {
+      render(d, { kind: "live", at });
+      const pinMatch = !!(d.code?.ok && d.github?.ok && d.code.value.digest === d.github.value.digest);
+      setGate({ live: true, pinMatch });
+    }
     else {
       const why = d.rules.error || d.code.error || "RPC unreachable";
       try {
@@ -266,4 +273,5 @@ async function load() {
 }
 
 $("refresh").addEventListener("click", load);
+initTry();
 load();

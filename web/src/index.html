@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>JusticeUpgrade Live Record</title>
-<meta name="description" content="The JusticeUpgrade contract on GenLayer studionet, read live from your browser: code hash, rules, recorded agreements, rulings, transactions and blocked attacks. Testnet only, no real value.">
+<title>JusticeUpgrade · AI arbiter for everyday agreements</title>
+<meta name="description" content="Run a real agreement dispute on GenLayer studionet from your browser: two testnet accounts sign every step, validators re-judge the AI ruling, and the result is read back from the contract. Plus the live record: code hash, rules, rulings, transactions and blocked attacks. Testnet only, no real value.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -17,12 +17,47 @@
   </header>
 
   <section class="hero">
-    <h1>The live contract record</h1>
-    <p>An on-chain AI arbiter for everyday agreements, written as a GenLayer Intelligent Contract. Everything below is read from the deployed contract by your browser when the page loads. The page is read-only: it never signs or sends a transaction.</p>
+    <h1>An AI arbiter for everyday agreements</h1>
+    <p>Two people write down a plain-English agreement on-chain: a chore split, a borrowed bike, who gets credit for a group project. If they later disagree, one files a dispute, the other responds, and a GenLayer Intelligent Contract gives a bounded ruling: <b>PARTY_A</b>, <b>PARTY_B</b>, <b>SPLIT</b> or <b>INSUFFICIENT_EVIDENCE</b>. Every validator re-judges the dispute with its own AI model, and the ruling only stands if they agree. No money moves; the contract records text.</p>
     <div class="heroact">
-      <button class="btn" id="refresh" type="button">Read again</button>
+      <a class="btn primary" href="#try">Run a dispute yourself</a>
+      <button class="btn" id="refresh" type="button">Read the record again</button>
       <span class="when" id="when"></span>
     </div>
+  </section>
+
+  <section class="panel try" id="try" aria-labelledby="try-h">
+    <h2 id="try-h">Try it on testnet: run one full dispute</h2>
+    <p class="lede">Your browser signs all five transactions against the live contract and shows each one's real status. It plays <b>both sides</b> with two throwaway testnet accounts, A and B, so you can see the whole lifecycle in one place. In real use, two different people each sign with their own wallet.</p>
+    <div id="burners" class="burners"></div>
+    <form id="tryform" novalidate>
+      <button class="link" id="trysample" type="button">Fill in a sample dispute</button>
+      <label for="t-terms">1 · The agreement (signed by A, accepted by B)</label>
+      <textarea id="t-terms" rows="3" maxlength="2000" placeholder="What did you both agree to? Plain English, no names or contact details."></textarea>
+      <span class="ferr" id="e-terms" role="alert"></span>
+      <label for="t-claim">2 · A's dispute</label>
+      <textarea id="t-claim" rows="3" maxlength="1500" placeholder="What went wrong, from A's side?"></textarea>
+      <span class="ferr" id="e-claim" role="alert"></span>
+      <label for="t-response">3 · B's response</label>
+      <textarea id="t-response" rows="3" maxlength="1500" placeholder="B's side of the story."></textarea>
+      <span class="ferr" id="e-response" role="alert"></span>
+      <label class="check"><input type="checkbox" id="c-public"> I understand this text is stored publicly on a testnet blockchain and cannot be deleted.</label>
+      <label class="check"><input type="checkbox" id="c-adult"> I am 18 or older, and the text has no real names, contact details or private information.</label>
+      <span class="ferr" id="e-consent" role="alert"></span>
+      <p class="gate" id="trygate" hidden></p>
+      <button class="cta" id="trysubmit" type="submit" disabled>Run the dispute on testnet</button>
+    </form>
+    <div id="tryprogress" hidden>
+      <ol class="steps" id="steps" aria-live="polite"></ol>
+      <p class="trynote" id="trynote" role="status"></p>
+      <div id="tryresult" aria-live="polite"></div>
+      <details class="trylogw"><summary>Transaction log</summary><ol class="trylog" id="trylog"></ol></details>
+    </div>
+  </section>
+
+  <section class="recordintro" aria-labelledby="record-h">
+    <h2 class="sect" id="record-h">The live record</h2>
+    <p class="lede">Everything below is read from the deployed contract by your browser when the page loads: the code hash, the rules, the recorded test agreements and rulings, every transaction, and four attacks the contract rolled back.</p>
   </section>
 
   <section class="panel" id="contract" aria-labelledby="contract-h">
@@ -56,7 +91,7 @@
 
   <footer>
     <span>JusticeUpgrade · GenLayer studionet testnet · no real value · holds no funds</span>
-    <span><a id="repo" href="https://github.com/yoyoblair333-wq/justiceupgrade-app">Source on GitHub</a> · <a id="evlink" href="https://github.com/yoyoblair333-wq/justiceupgrade-app/blob/main/docs/live/studionet-run.json">Recorded run</a></span>
+    <span><a href="demo/ju-demo.mp4">Watch the 54-second demo</a> · <a id="repo" href="https://github.com/yoyoblair333-wq/justiceupgrade-app">Source on GitHub</a> · <a id="evlink" href="https://github.com/yoyoblair333-wq/justiceupgrade-app/blob/main/docs/live/studionet-run.json">Recorded run</a></span>
   </footer>
 </div>
 <script type="module" src="app.js"></script>

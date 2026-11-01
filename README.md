@@ -1,12 +1,34 @@
 # JusticeUpgrade
 
-An on-chain AI arbiter for everyday agreements, written as a GenLayer Intelligent Contract.
+An on-chain AI arbiter for everyday agreements, written as a GenLayer Intelligent Contract, with a web app that runs the whole thing from your browser.
 
-Two people record a plain-English agreement on-chain, such as a roommates' chore split, a house rule, or who gets credit for which part of a group project. If they later disagree, either one files a dispute and the other may respond. An LLM running inside the GenVM then gives a **bounded ruling**: `PARTY_A`, `PARTY_B`, `SPLIT` or `INSUFFICIENT_EVIDENCE`. Each GenLayer validator re-judges the dispute on its own model. A validator accepts the leader's result only if it reaches the **same ruling**.
+**Live app:** https://yoyoblair333-wq.github.io/justiceupgrade-app/ · **Contract (studionet):** `0x189247716CB87661fDae59aA5fc38eb9df1D9c9c` · **Demo video (54 s):** https://yoyoblair333-wq.github.io/justiceupgrade-app/demo/ju-demo.mp4
+
+## What it is
+
+Two people record a plain-English agreement on-chain, such as a roommates' chore split, a borrowed bike, or who gets credit for which part of a group project. If they later disagree, either one files a dispute and the other may respond. An LLM running inside the GenVM then gives a **bounded ruling**: `PARTY_A`, `PARTY_B`, `SPLIT` or `INSUFFICIENT_EVIDENCE`, with a short reason and a suggested resolution. Each GenLayer validator re-judges the dispute on its own model, and a validator accepts the leader's result only if it reaches the **same ruling**.
 
 The contract holds no funds and moves no value. It is not an escrow, a payment tool, a delivery checker, or a work or credential verifier. It records text and gives a neutral reading of the parties' own agreement.
 
----
+## The trust problem
+
+Small agreements between people go wrong all the time, and there is nobody neutral to ask. A friend who referees is not neutral, a court is far too heavy, and a single AI chatbot can be prompted, re-rolled until it says what you want, or run by whichever side controls it. JusticeUpgrade puts the agreement, both statements and the ruling on a public ledger that neither side can edit, and makes the ruling a **consensus** result: independent validators, each running its own model, must reach the same bounded ruling before it is recorded. Inputs that try to instruct the arbiter ("ignore previous instructions", fake JSON rulings, role tags) are refused by the contract before any model sees them.
+
+## How to use it (web app, 4 clicks)
+
+1. Open https://yoyoblair333-wq.github.io/justiceupgrade-app/ and wait for the green **Live** badge. The page checks that the deployed code hashes to the same sha256 as `contracts/justice_upgrade.py` on GitHub, and only then enables the **Run the dispute on testnet** button.
+2. In **Try it on testnet**, click **Fill in a sample dispute** (or write your own agreement, dispute and response).
+3. Tick the two boxes (the text is public on a testnet; you are 18+ and it has no real names or contact details).
+4. Click **Run the dispute on testnet**.
+
+Your browser generates two throwaway testnet accounts (A and B, kept in its localStorage), signs all five transactions with [genlayer-js](https://www.npmjs.com/package/genlayer-js): `create_agreement` (A), `accept_agreement` (B), `file_dispute` (A), `respond` (B) and `resolve_dispute` (A). Each step shows its real status as it moves PENDING, ACCEPTED, FINALIZED, with validator votes and a transaction link. When the ruling transaction is final, the page reads the agreement and the ruling back from the contract with `get_agreement` and `get_ruling`. The browser plays both sides only so one visitor can see the full lifecycle; in real use, two people each sign with their own wallet. A ruling takes about one to three minutes.
+
+Below the form, the page shows the live record: the code-hash check, `get_rules()`, the recorded test agreements and rulings, every recorded transaction checked live, and four attacks the contract rolled back.
+
+## Live evidence
+
+- **Browser run** (the web app, driven by Playwright, every transaction signed in the browser): agreement `web-680d13c1656f`, 5 transactions signed by two in-browser burners, all FINALIZED with execution SUCCESS (103 s end to end); ruling `SPLIT` read back with `get_ruling`. Ruling tx `0x476485fee20698571c7600aca53f30d94a30d831351db3f679870bd1ee5ee13e`. Full record: [`docs/live/browser-run.json`](docs/live/browser-run.json).
+- **Scripted run** (13 transactions, including 4 attacks that roll back as designed): [`docs/LIVE_EVIDENCE.md`](docs/LIVE_EVIDENCE.md), [`docs/live/studionet-run.json`](docs/live/studionet-run.json), and the [Deployment evidence](#deployment-evidence-studionet-2026-10-31) table below.
 
 ## Verify in 5 minutes (for GenLayer stewards)
 
@@ -69,7 +91,7 @@ Live deployment made by following `deploy/STUDIO_DEPLOY.md` with the exact argum
 |---|---|
 | Network | Studionet (`https://studio.genlayer.com/api`) |
 | Contract address | `0x189247716CB87661fDae59aA5fc38eb9df1D9c9c` |
-| Live page | https://yoyoblair333-wq.github.io/justiceupgrade-app/ (enable Pages: Settings → Pages → Source: GitHub Actions) |
+| Live page | https://yoyoblair333-wq.github.io/justiceupgrade-app/ |
 | Deployed code check | `gen_getContractCode` sha256 `44c405df8ea7696795536f9552efc4de314acaf115832300afae2131e3f939b1` = sha256 of `contracts/justice_upgrade.py` (**match**) |
 | Deploy transaction | `0xee8119fc675deb8162f3f3d92669442454b483829ee7326c9bde20bd86dad855`: FINALIZED, SUCCESS |
 | `create_agreement` tx | `0x89275ba3fb57539f25a8dbf1386b21bdc61091013a231382d7f309b8c8a106a9`: FINALIZED, SUCCESS |
@@ -80,7 +102,7 @@ Live deployment made by following `deploy/STUDIO_DEPLOY.md` with the exact argum
 | Rejected injection attempt tx (expected revert) | `0x6c416071a9859ed62942914eb2e98a4a1fad5b2d7273a81b1337ffb5388ebf85`: FINALIZED, execution ERROR, revert `[EXPECTED] statement contains instructions aimed at the arbiter` |
 | Other guard reverts | Outsider files a dispute: `0xe375338d89a1b4756ce4822cd330c01f0317c78f66d9e9ee2f6115530c6a0115` (`[EXPECTED] only a party to the agreement may file a dispute`). Early resolve: `0x3f3347db2ae452c6373b684f41b05aa6853754721ca9f9d7be1c04e5c904ece7` (`[EXPECTED] response window is still open; wait for a response or the deadline`). Double resolve: `0x2d6969dd4d5b62ac1aa3568d251c694c22f70d68660ac8cf58a7cd9c1e3a97ca` (`[EXPECTED] cannot resolve: agreement is RESOLVED, expected DISPUTED`). All FINALIZED, execution ERROR |
 | `get_ruling("chores-1")` output | `{"status": "RESOLVED", "ruling": "SPLIT", "coerced": false, "reasoning": "The agreed terms contain no illness exception, so both missed nights (Tuesday and Wednesday) trigger the makeup obligation regardless of cause. Ben acknowledges skipping Wednesday and accepts the consequence, but has not offered to cover the Tuesday miss, which also violated the terms.", "resolution": "Ben should take out Ana's trash on the next two scheduled turns (one for Tuesday's missed dishes, one for Wednesday's), and both parties should discuss whether to add a sickness exception to their agreement going forward."}` |
-| Demo video | `TO FILL AFTER DEPLOY` |
+| Demo video | https://yoyoblair333-wq.github.io/justiceupgrade-app/demo/ju-demo.mp4 (54 s; the web app running one full dispute live, `docs/demo/ju-demo.mp4`) |
 
 ---
 
@@ -187,8 +209,12 @@ requirements.txt                pinned: genlayer-test 0.29.2, genvm-linter 0.11.
 Makefile                        setup / test / lint / verify
 .github/workflows/ci.yml        CI: runs scripts/verify.sh + the offline web tests
 .github/workflows/pages.yml     deploys web/ to GitHub Pages from main
-web/                            live read-only page (npm ci && npm run build && npm test;
-                                npm run test:live reads the real contract)
+web/                            live web app: run a dispute from the browser + the live record
+                                (npm ci && npm run build && npm test; npm run test:live reads the
+                                real contract; JU_WEB_WRITE=1 npm run test:live-write signs one
+                                full dispute on studionet)
+docs/live/browser-run.json      a full dispute signed in the browser by the web app
+docs/demo/ju-demo.mp4           54 s demo video (+ .srt captions), served at demo/ on Pages
 ```
 
 ## SDK target and known caveats
