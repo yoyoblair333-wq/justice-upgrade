@@ -9,12 +9,20 @@ env:
 
 jobs:
   verify:
-    runs-on: ubuntu-latest
+    # The exact command a reviewer runs from a fresh clone (README, "Verify in
+    # 2 minutes"): pinned Python tools, genvm-lint, 144 contract tests, web
+    # build + unit tests, and the read-only live check against the deployed
+    # contract on studionet. Ends with "VERIFY: PASS".
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
       - name: Cache GenVM SDK and linter artifacts
         uses: actions/cache@v4
         with:
@@ -22,12 +30,13 @@ jobs:
             ~/.cache/gltest-direct
             ~/.cache/genvm-linter
           key: genvm-v0.2.16
-      - name: Verify (lint + direct-mode tests)
+      - name: bash scripts/verify.sh
         run: bash scripts/verify.sh
 
   web:
-    # Offline web tests: build web/ and run the page in Chromium with every
-    # network request blocked (fallback snapshot, labels, text-only rendering).
+    # Browser web tier (needs Chromium, so it is kept out of verify.sh): build
+    # web/ and run the page in Chromium with every network request blocked
+    # (fallback snapshot, labels, text-only rendering), plus the unit tier.
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     defaults:
@@ -44,5 +53,5 @@ jobs:
       - name: Playwright Chromium + its OS libraries
         run: npx --no-install playwright install --with-deps chromium
       - run: npm run build
-      - name: Offline web tests
+      - name: Web unit + browser (offline) tests
         run: npm test

@@ -4,6 +4,35 @@ An on-chain AI arbiter for everyday agreements, written as a GenLayer Intelligen
 
 **Live app:** https://yoyoblair333-wq.github.io/justiceupgrade-app/ · **Contract (studionet):** `0x189247716CB87661fDae59aA5fc38eb9df1D9c9c` · **Demo video (54 s):** https://yoyoblair333-wq.github.io/justiceupgrade-app/demo/ju-demo.mp4
 
+## Verify in 2 minutes
+
+No API key, wallet, local node or Studio account is needed. You need **Python 3.12+** (with `venv`; on Debian/Ubuntu `sudo apt install python3-venv`), **Node.js 20+** with npm, `git`, `bash` (Linux, macOS or WSL) and internet access.
+
+```bash
+git clone https://github.com/yoyoblair333-wq/justiceupgrade-app.git
+cd justiceupgrade-app
+bash scripts/verify.sh
+```
+
+The last line is `VERIFY: PASS` (exit code 0). In order, `verify.sh`:
+
+1. builds a fresh `.venv` with the pinned tools in `requirements.txt`;
+2. runs `genvm-lint check` (AST lint + GenVM SDK validation) and extracts the ABI with `genvm-lint schema`;
+3. runs the **144 contract tests** (direct mode, real GenVM v0.2.16 SDK, LLM mocked);
+4. runs `npm ci`, builds the web app and runs its **7 unit tests** (node, no browser);
+5. runs a **read-only live check** against the deployed contract on studionet ([`web/scripts/live-check.mjs`](web/scripts/live-check.mjs)): the code the chain returns hashes to the same sha256 as `contracts/justice_upgrade.py` in your clone, `get_rules()` and `get_ruling()` return the recorded values, and all 18 recorded transactions (13 scripted incl. 4 expected reverts, 5 from the browser run) are `FINALIZED` as recorded. Nothing is signed or sent.
+
+A summary table marks each step PASS or FAIL. The first run downloads the GenVM v0.2.16 release (about 200 MB) once, so a cold machine takes 3 to 5 minutes; later runs take about a minute. Offline? `JU_SKIP_LIVE=1 bash scripts/verify.sh` runs everything except step 5. CI runs the same `scripts/verify.sh` on every push ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)); a cold-clone log is in [`docs/VERIFY_LOG.md`](docs/VERIFY_LOG.md).
+
+| | |
+|---|---|
+| Contract (GenLayer studionet) | `0x189247716CB87661fDae59aA5fc38eb9df1D9c9c` |
+| Explorer | https://explorer-studio.genlayer.com/address/0x189247716CB87661fDae59aA5fc38eb9df1D9c9c |
+| Open in GenLayer Studio | https://studio.genlayer.com/?import-contract=0x189247716CB87661fDae59aA5fc38eb9df1D9c9c |
+| Live site | https://yoyoblair333-wq.github.io/justiceupgrade-app/ |
+| RPC | `https://studio.genlayer.com/api` |
+| Live check only | `cd web && npm ci && npm run live-check` (behind an HTTPS proxy: `NODE_USE_ENV_PROXY=1 npm run live-check`) |
+
 ## What it is
 
 Two people record a plain-English agreement on-chain, such as a roommates' chore split, a borrowed bike, or who gets credit for which part of a group project. If they later disagree, either one files a dispute and the other may respond. An LLM running inside the GenVM then gives a **bounded ruling**: `PARTY_A`, `PARTY_B`, `SPLIT` or `INSUFFICIENT_EVIDENCE`, with a short reason and a suggested resolution. Each GenLayer validator re-judges the dispute on its own model, and a validator accepts the leader's result only if it reaches the **same ruling**.
@@ -30,56 +59,44 @@ Below the form, the page shows the live record: the code-hash check, `get_rules(
 - **Browser run** (the web app, driven by Playwright, every transaction signed in the browser): agreement `web-680d13c1656f`, 5 transactions signed by two in-browser burners, all FINALIZED with execution SUCCESS (103 s end to end); ruling `SPLIT` read back with `get_ruling`. Ruling tx `0x476485fee20698571c7600aca53f30d94a30d831351db3f679870bd1ee5ee13e`. Full record: [`docs/live/browser-run.json`](docs/live/browser-run.json).
 - **Scripted run** (13 transactions, including 4 attacks that roll back as designed): [`docs/LIVE_EVIDENCE.md`](docs/LIVE_EVIDENCE.md), [`docs/live/studionet-run.json`](docs/live/studionet-run.json), and the [Deployment evidence](#deployment-evidence-studionet-2026-10-31) table below.
 
-## Verify in 5 minutes (for GenLayer stewards)
+## Verification details
 
-You need Python 3.12 or newer, `git` and an internet connection (for pip and a one-time GenVM SDK download). You do not need a node, Studio, an API key or a wallet.
-
-```bash
-git clone https://github.com/yoyoblair333-wq/justiceupgrade-app.git
-cd justiceupgrade-app
-bash scripts/verify.sh
-```
-
-`verify.sh` builds a fresh `.venv`, installs the pinned tools in `requirements.txt`, runs `genvm-lint check` (AST lint plus SDK semantic validation), extracts the ABI schema, and runs the direct-mode test suite against the real GenVM v0.2.16 Python SDK with the LLM mocked.
-
-**Expected output** (the full log from a fresh clone is in [`docs/VERIFY_LOG.md`](docs/VERIFY_LOG.md)):
+`scripts/verify.sh` is the whole check; the README section [Verify in 2 minutes](#verify-in-2-minutes) has the commands. Expected summary (the full log from a fresh clone is in [`docs/VERIFY_LOG.md`](docs/VERIFY_LOG.md)):
 
 ```
-== JusticeUpgrade verify ==
-python 3.1x.x OK
-GenVM SDK release: v0.2.16
-== 1/4 create fresh virtualenv (.venv) ==
-genlayer-py==0.16.3
-genlayer-test==0.29.2
-genvm-linter==0.11.0
-pytest==9.1.1
-== 2/4 genvm-lint check (lint + SDK validation) ==
-✓ Lint passed (3 checks)
-✓ Validation passed
-  Contract: JusticeUpgrade
-  Methods: 12 (6 view, 6 write)
-== 3/4 ABI schema ==
-schema extracted OK
-== 4/4 direct-mode tests (real GenVM SDK, LLM mocked) ==
-........................................................................ [ 50%]
-......................................................................   [100%]
-144 passed in N.NNs
+================ SUMMARY ================
+PASS  setup: fresh .venv + pinned requirements
+PASS  genvm-lint check (lint + SDK validation)
+PASS  genvm-lint schema (ABI)
+PASS  contract tests (pytest, direct mode, LLM mocked)     144 passed
+PASS  setup: web npm ci
+PASS  web build
+PASS  web unit tests (node, no network)                     7 passed
+PASS  live read-only check (studionet)                      LIVE CHECK: PASS
+=========================================
 VERIFY: PASS
 ```
 
-On the first run, pytest prints a `gltest.config.yaml not found ... using default config` warning. This is expected: direct-mode tests never contact a network, so no network config is needed. The first run also downloads the GenVM v0.2.16 release (about 200 MB) once for the linter (`~/.cache/genvm-linter`) and once for the tests (`~/.cache/gltest-direct`). Later runs take a few seconds. Both tools are pinned to v0.2.16 through `GENVM_VERSION`, so every machine checks against the same SDK.
+Notes for a cold machine:
 
-The same steps, one at a time:
+- pytest prints a `gltest.config.yaml not found ... using default config` warning and an INFO block naming `localnet`. This is expected: direct-mode tests never contact a network, so no network config is needed.
+- The GenVM v0.2.16 release is downloaded once for the linter (`~/.cache/genvm-linter`) and once for the tests (`~/.cache/gltest-direct`). Both are pinned through `GENVM_VERSION`, so every machine checks against the same SDK.
+- If `python3` is older than 3.12, `verify.sh` looks for `python3.13`/`python3.12`; or set `PYTHON=/path/to/python3.12`.
+- Behind a corporate HTTPS proxy, `verify.sh` sets `NODE_USE_ENV_PROXY=1` when `HTTPS_PROXY` is set (needs Node 22.21+); add `NODE_EXTRA_CA_CERTS=/path/to/ca.pem` if the proxy re-signs TLS.
+
+The same steps one at a time:
 
 ```bash
-make setup   # .venv + pinned requirements
-make lint    # genvm-lint check contracts/justice_upgrade.py
-make test    # pytest tests -q   -> 144 passed
+make setup      # .venv + pinned requirements
+make lint       # genvm-lint check contracts/justice_upgrade.py
+make test       # pytest tests -q          -> 144 passed
+make web        # web: npm ci, build, unit tests  -> 7 passed
+make live       # read-only live check against the deployed contract
 ```
 
-CI runs `scripts/verify.sh` on every push ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
+Optional web tiers (need Playwright's Chromium: `cd web && npx playwright install --with-deps chromium`): `npm run test:browser` (the built page in Chromium with the network blocked; CI runs it in the `web` job) and `npm run test:live` (the built page reading the real contract). `JU_WEB_WRITE=1 npm run test:live-write` signs one full dispute on studionet from the page.
 
-To deploy and try it live, follow [`deploy/STUDIO_DEPLOY.md`](deploy/STUDIO_DEPLOY.md). It covers GenLayer Studio step by step and gives copy-paste arguments for a full run.
+To deploy your own copy and try it live, follow [`deploy/STUDIO_DEPLOY.md`](deploy/STUDIO_DEPLOY.md). It covers GenLayer Studio step by step and gives copy-paste arguments for a full run.
 
 ---
 
@@ -177,7 +194,7 @@ resolve_dispute("chores-1")                        # as either
 
 ## Tests
 
-There are 144 direct-mode tests in `tests/direct/`. They run in-process against the real GenVM Python SDK with LLM calls mocked by regex. The fixtures `direct_vm`, `direct_deploy`, `direct_alice`, `direct_bob` and `direct_charlie` come from the `genlayer-test` pytest plugin. `tests/direct/conftest.py` adds the deploy fixture, a clock helper and event capture.
+There are 144 direct-mode contract tests in `tests/direct/`, plus 7 web unit tests (`web/test/unit.test.mjs`), 5 offline browser tests (`web/test/browser.test.mjs`) and the read-only live check (`web/scripts/live-check.mjs`). They run in-process against the real GenVM Python SDK with LLM calls mocked by regex. The fixtures `direct_vm`, `direct_deploy`, `direct_alice`, `direct_bob` and `direct_charlie` come from the `genlayer-test` pytest plugin. `tests/direct/conftest.py` adds the deploy fixture, a clock helper and event capture.
 
 | File | Tests | Covers |
 |---|---|---|
@@ -200,19 +217,21 @@ There are 144 direct-mode tests in `tests/direct/`. They run in-process against 
 ```
 contracts/justice_upgrade.py    the Intelligent Contract
 tests/direct/                   direct-mode tests + conftest.py
-scripts/verify.sh               one-shot reviewer verification
+scripts/verify.sh               one-shot reviewer verification (ends VERIFY: PASS)
 deploy/STUDIO_DEPLOY.md         GenLayer Studio deployment + full example run
 docs/VERIFY_LOG.md              output of verify.sh from a fresh clone
 docs/LIVE_EVIDENCE.md           live Studionet deployment record
 docs/live/studionet-run.json    raw JSON of that run
 requirements.txt                pinned: genlayer-test 0.29.2, genvm-linter 0.11.0, pytest 9.1.1
 Makefile                        setup / test / lint / verify
-.github/workflows/ci.yml        CI: runs scripts/verify.sh + the offline web tests
+.github/workflows/ci.yml        CI: runs scripts/verify.sh + the browser web tests
 .github/workflows/pages.yml     deploys web/ to GitHub Pages from main
 web/                            live web app: run a dispute from the browser + the live record
-                                (npm ci && npm run build && npm test; npm run test:live reads the
-                                real contract; JU_WEB_WRITE=1 npm run test:live-write signs one
-                                full dispute on studionet)
+                                (npm ci && npm run build && npm run test:unit; npm run live-check
+                                reads the real contract without a browser; npm run test:browser
+                                and npm run test:live need Chromium; JU_WEB_WRITE=1
+                                npm run test:live-write signs one full dispute on studionet)
+web/scripts/live-check.mjs      read-only live check used by verify.sh (step 8)
 docs/live/browser-run.json      a full dispute signed in the browser by the web app
 docs/demo/ju-demo.mp4           54 s demo video (+ .srt captions), served at demo/ on Pages
 ```

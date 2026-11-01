@@ -10,8 +10,11 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "snapshot": "node scripts/snapshot.mjs",
+    "live-check": "node scripts/live-check.mjs",
     "browser:install": "playwright install chromium",
-    "test": "node --test --test-concurrency=1 test/offline.test.mjs",
+    "test": "node --test --test-concurrency=1 test/unit.test.mjs test/browser.test.mjs",
+    "test:unit": "node --test test/unit.test.mjs",
+    "test:browser": "node --test --test-concurrency=1 test/browser.test.mjs",
     "test:live": "node test/live.test.cjs",
     "test:live-write": "node test/live-write.test.cjs"
   },
