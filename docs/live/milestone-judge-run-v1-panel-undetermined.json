@@ -1,0 +1,708 @@
+{
+ "network": "studionet",
+ "rpc": "https://studio.genlayer.com/api",
+ "startedAt": "2026-11-02T04:14:08.593Z",
+ "contract_file": "contracts/milestone_judge.py",
+ "contract_code_sha256": "c6b751876b2e28b74b389891e7c08b71657991563bbda39c86ed0f1afde1897d",
+ "owner": "0x920fbbCf2106B693A857D1995c198e341220a46A",
+ "deployer": "0x34653Fb290480a8C99B4D92D4857123B5624c37d",
+ "client": "0x2A335F4FbbE1a367D46BdC01cD751a5C315F964b",
+ "freelancer": "0xF6B5A180aDCc9d0C379343cb0c1009A83188c3A3",
+ "pages_commit": "dcfa4feafed3487737053f2516612a0ceab06af8",
+ "contract": "0x613E8bac24D0D816f53E398D12e1766cC890dFaf",
+ "steps": [
+  {
+   "label": "deploy MilestoneJudge (owner = Blair's wallet)",
+   "fn": "deploy",
+   "as": "deployer",
+   "signer": "0x34653Fb290480a8C99B4D92D4857123B5624c37d",
+   "args": [
+    "0x920fbbCf2106B693A857D1995c198e341220a46A"
+   ],
+   "tx": "0x84abfd3cbf1c9469c5cd1f692dc8a08442f8556e32edc7ff328fdd5c8358616b",
+   "transitions": [
+    {
+     "at": "2026-11-02T04:14:10.008Z",
+     "status": "PROPOSING"
+    },
+    {
+     "at": "2026-11-02T04:14:15.430Z",
+     "status": "ACCEPTED"
+    },
+    {
+     "at": "2026-11-02T04:14:42.599Z",
+     "status": "FINALIZED"
+    }
+   ],
+   "final": {
+    "status": "FINALIZED",
+    "result": null,
+    "execution": "SUCCESS",
+    "votes": {
+     "agree": 3,
+     "idle": 2
+    },
+    "rounds": "1",
+    "error": null
+   },
+   "address": "0x613E8bac24D0D816f53E398D12e1766cC890dFaf"
+  },
+  {
+   "label": "E1 create_engagement (2 milestones, rule ALL)",
+   "fn": "create_engagement",
+   "as": "client",
+   "signer": "0x2A335F4FbbE1a367D46BdC01cD751a5C315F964b",
+   "args": [
+    "0xF6B5A180aDCc9d0C379343cb0c1009A83188c3A3",
+    "Lantern CLI docs",
+    "[{\"title\":\"Quick-start guide\",\"amount\":400,\"criteria\":[\"Explains how to install the tool with a single command.\",\"Includes a minimal usage example of at least three lines of code.\",\"Lists at least three configuration options with a one-line description each.\"]},{\"title\":\"Troubleshooting page\",\"amount\":600,\"criteria\":[\"Covers at least three distinct error messages a user might see.\",\"Gives a concrete fix for each error message listed.\",\"Ends with a pointer to where users can get further help.\"]}]",
+    "100",
+    "3",
+    "3",
+    "24",
+    "72"
+   ],
+   "expect": "SUCCESS",
+   "sentAt": "2026-11-02T04:14:44.821Z",
+   "tx": "0x732f7d69c21de64dd677e8a350c0d358a902c7e352076fd11da37ee711fe9e9c",
+   "transitions": [
+    {
+     "at": "2026-11-02T04:14:45.401Z",
+     "status": "PENDING"
+    },
+    {
+     "at": "2026-11-02T04:14:50.768Z",
+     "status": "ACCEPTED"
+    },
+    {
+     "at": "2026-11-02T04:15:22.937Z",
+     "status": "FINALIZED"
+    }
+   ],
+   "final": {
+    "status": "FINALIZED",
+    "result": null,
+    "execution": "SUCCESS",
+    "votes": {
+     "agree": 3,
+     "idle": 2
+    },
+    "rounds": "1",
+    "error": null
+   }
+  },
+  {
+   "label": "E1 accept_engagement (by terms hash)",
+   "fn": "accept_engagement",
+   "as": "freelancer",
+   "signer": "0xF6B5A180aDCc9d0C379343cb0c1009A83188c3A3",
+   "args": [
+    "1",
+    "884d1d9fc016ac6de5df8bba0da946625a28d5d3623f5f7a577b08efee85f550"
+   ],
+   "expect": "SUCCESS",
+   "sentAt": "2026-11-02T04:15:24.018Z",
+   "tx": "0xb16c71c0cb1d3fdbba25f6f908dc1e171fb7c81c9333304248a4ce5c0ac71805",
+   "transitions": [
+    {
+     "at": "2026-11-02T04:15:24.487Z",
+     "status": "PENDING"
+    },
+    {
+     "at": "2026-11-02T04:15:29.898Z",
+     "status": "ACCEPTED"
+    },
+    {
+     "at": "2026-11-02T04:16:02.302Z",
+     "status": "FINALIZED"
+    }
+   ],
+   "final": {
+    "status": "FINALIZED",
+    "result": null,
+    "execution": "SUCCESS",
+    "votes": {
+     "agree": 5
+    },
+    "rounds": "1",
+    "error": null
+   }
+  },
+  {
+   "label": "E1 fund",
+   "fn": "fund",
+   "as": "client",
+   "signer": "0x2A335F4FbbE1a367D46BdC01cD751a5C315F964b",
+   "args": [
+    "1"
+   ],
+   "expect": "SUCCESS",
+   "sentAt": "2026-11-02T04:16:02.304Z",
+   "tx": "0x5f8924c69a72f7e3dbd9dbf2358c11b667bff534875caa5e39705bc2a2c2627d",
+   "transitions": [
+    {
+     "at": "2026-11-02T04:16:02.800Z",
+     "status": "PENDING"
+    },
+    {
+     "at": "2026-11-02T04:16:08.190Z",
+     "status": "ACCEPTED"
+    },
+    {
+     "at": "2026-11-02T04:16:41.669Z",
+     "status": "FINALIZED"
+    }
+   ],
+   "final": {
+    "status": "FINALIZED",
+    "result": null,
+    "execution": "SUCCESS",
+    "votes": {
+     "agree": 5
+    },
+    "rounds": "1",
+    "error": null
+   }
+  },
+  {
+   "label": "E1 M1 submit good delivery",
+   "fn": "submit_delivery",
+   "as": "freelancer",
+   "signer": "0xF6B5A180aDCc9d0C379343cb0c1009A83188c3A3",
+   "args": [
+    "1",
+    "0",
+    "https://raw.githubusercontent.com/yoyoblair333-wq/justiceupgrade-app/dcfa4feafed3487737053f2516612a0ceab06af8/examples/milestone-judge/delivery-ok.md",
+    "Quick-start guide, first version."
+   ],
+   "expect": "APPROVED",
+   "sentAt": "2026-11-02T04:16:41.671Z",
+   "tx": "0x407c09e50bbe3195aa7782bc3029925d9c33b707309ee0cb0a72b6ec95f7e4d4",
+   "transitions": [
+    {
+     "at": "2026-11-02T04:16:42.103Z",
+     "status": "PENDING"
+    },
+    {
+     "at": "2026-11-02T04:16:47.510Z",
+     "status": "PROPOSING"
+    },
+    {
+     "at": "2026-11-02T04:16:52.875Z",
+     "status": "COMMITTING"
+    },
+    {
+     "at": "2026-11-02T04:17:03.713Z",
+     "status": "ACCEPTED"
+    },
+    {
+     "at": "2026-11-02T04:17:35.746Z",
+     "status": "FINALIZED"
+    }
+   ],
+   "final": {
+    "status": "FINALIZED",
+    "result": null,
+    "execution": "SUCCESS",
+    "votes": {
+     "idle": 1,
+     "disagree": 1,
+     "agree": 3
+    },
+    "rounds": "1",
+    "error": null
+   }
+  },
+  {
+   "label": "E1 M1 client appeal",
+   "fn": "appeal",
+   "as": "client",
+   "signer": "0x2A335F4FbbE1a367D46BdC01cD751a5C315F964b",
+   "args": [
+    "1",
+    "0",
+    "Please have a larger panel confirm the configuration section."
+   ],
+   "expect": "DISPUTED",
+   "sentAt": "2026-11-02T04:17:36.857Z",
+   "tx": "0xfa2130324f2a7d44731b93d5dedabdfe5b285cbdf04afa6cb4085d6ccb962a76",
+   "transitions": [
+    {
+     "at": "2026-11-02T04:17:37.353Z",
+     "status": "PENDING"
+    },
+    {
+     "at": "2026-11-02T04:17:42.696Z",
+     "status": "ACCEPTED"
+    },
+    {
+     "at": "2026-11-02T04:18:14.828Z",
+     "status": "FINALIZED"
+    }
+   ],
+   "final": {
+    "status": "FINALIZED",
+    "result": null,
+    "execution": "SUCCESS",
+    "votes": {
+     "agree": 3,
+     "idle": 2
+    },
+    "rounds": "1",
+    "error": null
+   }
+  },
+  {
+   "label": "E1 M1 resolve_dispute (3-juror panel)",
+   "fn": "resolve_dispute",
+   "as": "client",
+   "signer": "0x2A335F4FbbE1a367D46BdC01cD751a5C315F964b",
+   "args": [
+    "1",
+    "0"
+   ],
+   "expect": "FINAL",
+   "sentAt": "2026-11-02T04:18:14.833Z",
+   "tx": "0x8ecf3bd10d65434b39cecc2b4ce2d56cf29ef12fc1efb47d907b99e9f3bd7149",
+   "transitions": [
+    {
+     "at": "2026-11-02T04:18:15.518Z",
+     "status": "PENDING"
+    },
+    {
+     "at": "2026-11-02T04:18:20.833Z",
+     "status": "PROPOSING"
+    },
+    {
+     "at": "2026-11-02T04:19:03.962Z",
+     "status": "COMMITTING"
+    },
+    {
+     "at": "2026-11-02T04:20:51.144Z",
+     "status": "PROPOSING"
+    },
+    {
+     "at": "2026-11-02T04:21:44.794Z",
+     "status": "COMMITTING"
+    },
+    {
+     "at": "2026-11-02T04:23:26.174Z",
+     "status": "UNDETERMINED"
+    }
+   ],
+   "final": {
+    "status": "UNDETERMINED",
+    "result": null,
+    "execution": "SUCCESS",
+    "votes": {
+     "disagree": 3,
+     "idle": 2
+    },
+    "rounds": "4",
+    "error": null
+   }
+  },
+  {
+   "label": "E1 M2 submit weak delivery",
+   "fn": "submit_delivery",
+   "as": "freelancer",
+   "signer": "0xF6B5A180aDCc9d0C379343cb0c1009A83188c3A3",
+   "args": [
+    "1",
+    "1",
+    "https://raw.githubusercontent.com/yoyoblair333-wq/justiceupgrade-app/dcfa4feafed3487737053f2516612a0ceab06af8/examples/milestone-judge/delivery-weak.md",
+    "Troubleshooting, first pass."
+   ],
+   "expect": "REVISION_REQUESTED",
+   "sentAt": "2026-11-02T04:23:27.269Z",
+   "tx": "0xc1506b147f488737d4aa2b4c261ea83f9d6e84f1d2520b81a11705fe0ad8010d",
+   "transitions": [
+    {
+     "at": "2026-11-02T04:23:27.713Z",
+     "status": "PENDING"
+    },
+    {
+     "at": "2026-11-02T04:23:33.050Z",
+     "status": "COMMITTING"
+    },
+    {
+     "at": "2026-11-02T04:23:43.455Z",
+     "status": "ACCEPTED"
+    },
+    {
+     "at": "2026-11-02T04:24:09.950Z",
+     "status": "FINALIZED"
+    }
+   ],
+   "final": {
+    "status": "FINALIZED",
+    "result": null,
+    "execution": "SUCCESS",
+    "votes": {
+     "agree": 3,
+     "idle": 2
+    },
+    "rounds": "1",
+    "error": null
+   }
+  }
+ ],
+ "reads": {
+  "get_config_at_start": {
+   "appeal_jurors": 3,
+   "engagement_statuses": [
+    "PROPOSED",
+    "AWAITING_FUNDING",
+    "ACTIVE",
+    "COMPLETED",
+    "CANCELLED"
+   ],
+   "first_jurors": 1,
+   "flags": [
+    "INJECTED",
+    "FETCH_FAILED",
+    "EMPTY_PAGE",
+    "CONTENT_CHANGED"
+   ],
+   "labels": [
+    "MET",
+    "NOT_MET",
+    "CANNOT_VERIFY"
+   ],
+   "max_attempts_cap": 5,
+   "max_criteria": 8,
+   "max_milestones": 10,
+   "max_page_chars": 12000,
+   "milestone_statuses": [
+    "OPEN",
+    "SUBMITTED",
+    "JUDGED",
+    "REVISION_REQUESTED",
+    "DISPUTED",
+    "FINAL"
+   ],
+   "next_id": 1,
+   "owner": "0x920fbbcf2106b693a857d1995c198e341220a46a",
+   "paused": false,
+   "units": "accounting units (no GEN is held or moved)"
+  },
+  "e1_after_create": {
+   "accepted_at": "",
+   "appeal_window_minutes": 3,
+   "client": "0x2a335f4fbbe1a367d46bdc01cd751a5c315f964b",
+   "closed_at": "",
+   "created_at": "2026-11-02T04:14:45Z",
+   "delivery_deadline": "",
+   "delivery_window_hours": 72,
+   "freelancer": "0xf6b5a180adcc9d0c379343cb0c1009a83188c3a3",
+   "funded_at": "",
+   "funding_deadline": "",
+   "funding_window_hours": 24,
+   "id": 1,
+   "max_attempts": 3,
+   "milestone_count": 2,
+   "milestone_statuses": [
+    "OPEN",
+    "OPEN"
+   ],
+   "refunded_units": 0,
+   "released_units": 0,
+   "rule": "ALL",
+   "status": "PROPOSED",
+   "terms_sha256": "884d1d9fc016ac6de5df8bba0da946625a28d5d3623f5f7a577b08efee85f550",
+   "threshold_pct": 100,
+   "title": "Lantern CLI docs",
+   "total_units": 1000
+  },
+  "e1_m1_after_submit": {
+   "amount": 400,
+   "appeal_deadline": "2026-11-02T04:19:41Z",
+   "appeal_reason": "",
+   "appeal_used": false,
+   "appealed_by": "",
+   "attempts": 1,
+   "attempts_left": 2,
+   "content_sha256": "ea508a75a1201474c840d3630d3dd40f5fc4f4bc2f4763371365d55f33d3e641",
+   "criteria": [
+    {
+     "required": false,
+     "text": "Explains how to install the tool with a single command.",
+     "weight": 1
+    },
+    {
+     "required": false,
+     "text": "Includes a minimal usage example of at least three lines of code.",
+     "weight": 1
+    },
+    {
+     "required": false,
+     "text": "Lists at least three configuration options with a one-line description each.",
+     "weight": 1
+    }
+   ],
+   "engagement_id": 1,
+   "evidence": [
+    "Install Lantern with a single command:\n\n    pip install lantern-cli",
+    "from lantern import Lamp\n    lamp = Lamp(\"build-status\")\n    lamp.light(color=\"green\")\n    lamp.blink(times=3)",
+    "- `brightness`: a number from 0 to 100 that sets how bright the lamp is (default 70).\n- `color`: the default lamp color, any CSS color name such as `green` or `orange`."
+   ],
+   "flag": "",
+   "history": [
+    {
+     "at": "2026-11-02T04:16:41Z",
+     "attempt": 1,
+     "event": "SUBMITTED",
+     "url": "https://raw.githubusercontent.com/yoyoblair333-wq/justiceupgrade-app/dcfa4feafed3487737053f2516612a0ceab06af8/examples/milestone-judge/delivery-ok.md"
+    },
+    {
+     "at": "2026-11-02T04:16:41Z",
+     "attempt": 1,
+     "content_sha256": "ea508a75a1201474c840d3630d3dd40f5fc4f4bc2f4763371365d55f33d3e641",
+     "event": "JUDGED",
+     "flag": "",
+     "labels": [
+      "MET",
+      "MET",
+      "MET"
+     ],
+     "outcome": "APPROVED",
+     "score_pct": 100
+    }
+   ],
+   "index": 0,
+   "judged_at": "2026-11-02T04:16:41Z",
+   "jurors": 1,
+   "labels": [
+    "MET",
+    "MET",
+    "MET"
+   ],
+   "last_note": "Quick-start guide, first version.",
+   "last_url": "https://raw.githubusercontent.com/yoyoblair333-wq/justiceupgrade-app/dcfa4feafed3487737053f2516612a0ceab06af8/examples/milestone-judge/delivery-ok.md",
+   "outcome": "APPROVED",
+   "reasons": [
+    "The delivery provides a single pip command for installation.",
+    "The document includes a four-line Python code example.",
+    "The page lists four configuration options, each with a one-line description."
+   ],
+   "score_pct": 100,
+   "settled_at": "",
+   "settlement": "",
+   "status": "JUDGED",
+   "title": "Quick-start guide",
+   "votes": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     0
+    ]
+   ]
+  },
+  "e1_m1_after_appeal": {
+   "amount": 400,
+   "appeal_deadline": "2026-11-02T04:19:41Z",
+   "appeal_reason": "Please have a larger panel confirm the configuration section.",
+   "appeal_used": true,
+   "appealed_by": "0x2a335f4fbbe1a367d46bdc01cd751a5c315f964b",
+   "attempts": 1,
+   "attempts_left": 2,
+   "content_sha256": "ea508a75a1201474c840d3630d3dd40f5fc4f4bc2f4763371365d55f33d3e641",
+   "criteria": [
+    {
+     "required": false,
+     "text": "Explains how to install the tool with a single command.",
+     "weight": 1
+    },
+    {
+     "required": false,
+     "text": "Includes a minimal usage example of at least three lines of code.",
+     "weight": 1
+    },
+    {
+     "required": false,
+     "text": "Lists at least three configuration options with a one-line description each.",
+     "weight": 1
+    }
+   ],
+   "engagement_id": 1,
+   "evidence": [
+    "Install Lantern with a single command:\n\n    pip install lantern-cli",
+    "from lantern import Lamp\n    lamp = Lamp(\"build-status\")\n    lamp.light(color=\"green\")\n    lamp.blink(times=3)",
+    "- `brightness`: a number from 0 to 100 that sets how bright the lamp is (default 70).\n- `color`: the default lamp color, any CSS color name such as `green` or `orange`."
+   ],
+   "flag": "",
+   "history": [
+    {
+     "at": "2026-11-02T04:16:41Z",
+     "attempt": 1,
+     "event": "SUBMITTED",
+     "url": "https://raw.githubusercontent.com/yoyoblair333-wq/justiceupgrade-app/dcfa4feafed3487737053f2516612a0ceab06af8/examples/milestone-judge/delivery-ok.md"
+    },
+    {
+     "at": "2026-11-02T04:16:41Z",
+     "attempt": 1,
+     "content_sha256": "ea508a75a1201474c840d3630d3dd40f5fc4f4bc2f4763371365d55f33d3e641",
+     "event": "JUDGED",
+     "flag": "",
+     "labels": [
+      "MET",
+      "MET",
+      "MET"
+     ],
+     "outcome": "APPROVED",
+     "score_pct": 100
+    },
+    {
+     "at": "2026-11-02T04:17:37Z",
+     "by": "0x2a335f4fbbe1a367d46bdc01cd751a5c315f964b",
+     "event": "DISPUTED"
+    }
+   ],
+   "index": 0,
+   "judged_at": "2026-11-02T04:16:41Z",
+   "jurors": 1,
+   "labels": [
+    "MET",
+    "MET",
+    "MET"
+   ],
+   "last_note": "Quick-start guide, first version.",
+   "last_url": "https://raw.githubusercontent.com/yoyoblair333-wq/justiceupgrade-app/dcfa4feafed3487737053f2516612a0ceab06af8/examples/milestone-judge/delivery-ok.md",
+   "outcome": "APPROVED",
+   "reasons": [
+    "The delivery provides a single pip command for installation.",
+    "The document includes a four-line Python code example.",
+    "The page lists four configuration options, each with a one-line description."
+   ],
+   "score_pct": 100,
+   "settled_at": "",
+   "settlement": "",
+   "status": "DISPUTED",
+   "title": "Quick-start guide",
+   "votes": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     0
+    ]
+   ]
+  },
+  "e1_m2_after_weak": {
+   "amount": 600,
+   "appeal_deadline": "",
+   "appeal_reason": "",
+   "appeal_used": false,
+   "appealed_by": "",
+   "attempts": 1,
+   "attempts_left": 2,
+   "content_sha256": "2802c65b3edc47aba48b8b596bc94a1cbc3bc3077f77ca20d1e404c587d328e0",
+   "criteria": [
+    {
+     "required": false,
+     "text": "Covers at least three distinct error messages a user might see.",
+     "weight": 1
+    },
+    {
+     "required": false,
+     "text": "Gives a concrete fix for each error message listed.",
+     "weight": 1
+    },
+    {
+     "required": false,
+     "text": "Ends with a pointer to where users can get further help.",
+     "weight": 1
+    }
+   ],
+   "engagement_id": 1,
+   "evidence": [
+    "",
+    "",
+    ""
+   ],
+   "flag": "",
+   "history": [
+    {
+     "at": "2026-11-02T04:23:27Z",
+     "attempt": 1,
+     "event": "SUBMITTED",
+     "url": "https://raw.githubusercontent.com/yoyoblair333-wq/justiceupgrade-app/dcfa4feafed3487737053f2516612a0ceab06af8/examples/milestone-judge/delivery-weak.md"
+    },
+    {
+     "at": "2026-11-02T04:23:27Z",
+     "attempt": 1,
+     "content_sha256": "2802c65b3edc47aba48b8b596bc94a1cbc3bc3077f77ca20d1e404c587d328e0",
+     "event": "JUDGED",
+     "flag": "",
+     "labels": [
+      "NOT_MET",
+      "NOT_MET",
+      "NOT_MET"
+     ],
+     "outcome": "REVISION_REQUESTED",
+     "score_pct": 0
+    }
+   ],
+   "index": 1,
+   "judged_at": "2026-11-02T04:23:27Z",
+   "jurors": 1,
+   "labels": [
+    "NOT_MET",
+    "NOT_MET",
+    "NOT_MET"
+   ],
+   "last_note": "Troubleshooting, first pass.",
+   "last_url": "https://raw.githubusercontent.com/yoyoblair333-wq/justiceupgrade-app/dcfa4feafed3487737053f2516612a0ceab06af8/examples/milestone-judge/delivery-weak.md",
+   "outcome": "REVISION_REQUESTED",
+   "reasons": [
+    "The delivery page lists no error messages at all, let alone three distinct ones.",
+    "No error messages are listed, so no concrete fixes are provided.",
+    "The page contains no pointer to further help resources or support channels."
+   ],
+   "score_pct": 0,
+   "settled_at": "",
+   "settlement": "",
+   "status": "REVISION_REQUESTED",
+   "title": "Troubleshooting page",
+   "votes": [
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ]
+   ]
+  }
+ },
+ "deploy_tx": "0x84abfd3cbf1c9469c5cd1f692dc8a08442f8556e32edc7ff328fdd5c8358616b",
+ "stored_code_sha256": "c6b751876b2e28b74b389891e7c08b71657991563bbda39c86ed0f1afde1897d",
+ "code_matches": true
+}

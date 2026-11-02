@@ -240,6 +240,23 @@ def test_evidence_match_ignores_case_and_whitespace(direct_vm, mj, make, direct_
     assert submit(direct_vm, mj, direct_bob, eid, 0, URL1, QUICKSTART, loose)["outcome"] == "APPROVED"
 
 
+def test_retyped_quote_with_typographic_hyphen_and_no_markdown_is_grounded(direct_vm, mj, make, direct_bob):
+    # Live finding (2026-11-02): models retype quotes with U+2011 hyphens and drop backticks.
+    eid = make()
+    retyped = reply(crit("MET", "pip install lantern\u2011cli"), crit("MET", "lamp = Lamp(\u201cdemo\u201d)"),
+                    crit("MET", "timeout: seconds before the lamp dims."))
+    assert submit(direct_vm, mj, direct_bob, eid, 0, URL1, QUICKSTART, retyped)["labels"] == ["MET"] * 3
+
+
+def test_ellipsis_quote_fragments_must_appear_in_order(direct_vm, mj, make, direct_bob):
+    eid = make()
+    ok = reply(crit("MET", "Install with one command: ... pip install lantern-cli"),
+               crit("MET", "lamp = Lamp(\"demo\") ... lamp.light()"),
+               crit("MET", "lamp.light() ... lamp = Lamp(\"demo\")"))      # wrong order
+    m = submit(direct_vm, mj, direct_bob, eid, 0, URL1, QUICKSTART, ok)
+    assert m["labels"] == ["MET", "MET", "CANNOT_VERIFY"]
+
+
 def test_weighted_rule_with_required_criterion(direct_vm, mj, make, direct_bob):
     ms = [{"title": "Report", "amount": 100, "criteria": [
         {"text": "States the main finding in the first paragraph.", "weight": 3, "required": True},
